@@ -82,7 +82,7 @@ export default function Navbar() {
         transition: 'all 0.4s ease'
       }}
     >
-      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+      <div style={{ maxWidth: '1600px', margin: '0 auto', padding: '0 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontWeight: 'bold', fontSize: '1.4rem', color: 'var(--white)', letterSpacing: '2px', fontFamily: 'var(--font-serif)' }}>
           <img src="/logo.png" alt="Crabby Al's Logo" style={{ height: '65px', width: 'auto' }} />
           <span style={{ textTransform: 'uppercase' }}>CRABBY AL&apos;S</span>

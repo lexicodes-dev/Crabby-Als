@@ -16,6 +16,7 @@ export async function getDailySpecials(): Promise<DailySpecialData | null> {
         query GetDailySpecials {
             specials(first: 1) {
                 nodes {
+                    date
                     dailySpecials {
                         dailySpecials {
                             node {
@@ -54,15 +55,34 @@ export async function getDailySpecials(): Promise<DailySpecialData | null> {
         const imageUrl = fields.dailySpecials?.node?.sourceUrl || '';
 
         // Date extraction
-        const rawDate = fields.dayOfSpecials || '';
-        const dateText = rawDate
-            ? new Date(rawDate).toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-            })
-            : '';
+        const manualDate = fields.dayOfSpecials?.trim() ? fields.dayOfSpecials : null;
+        const uploadDate = node.date?.trim() ? node.date : null;
+        const rawDate = manualDate || uploadDate || '';
+        
+        let dateText = '';
+        if (rawDate) {
+            // Extract YYYY-MM-DD to avoid timezone shifting issues (e.g. 5/5 becoming 5/4)
+            const datePart = rawDate.split('T')[0];
+            const [year, month, day] = datePart.split('-');
+            
+            if (year && month && day) {
+                // Set to noon local time to avoid timezone edge cases
+                const safeDate = new Date(Number(year), Number(month) - 1, Number(day), 12, 0, 0);
+                dateText = safeDate.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                });
+            } else {
+                dateText = new Date(rawDate).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                });
+            }
+        }
 
         return {
             imageUrl,
