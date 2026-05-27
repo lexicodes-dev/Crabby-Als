@@ -8,6 +8,7 @@ export default function EventsPage() {
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [posterUrl, setPosterUrl] = useState<string | null>(null);
     const [loadingPoster, setLoadingPoster] = useState(true);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         getBandScheduleImage().then((url) => {
@@ -16,9 +17,31 @@ export default function EventsPage() {
         });
     }, []);
 
-    const handleFormSubmit = (e: React.FormEvent) => {
+    const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setFormSubmitted(true);
+        setIsSubmitting(true);
+        
+        const form = e.target as HTMLFormElement;
+        const formData = new FormData(form);
+        formData.append("access_key", process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "");
+
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            });
+
+            if (response.ok) {
+                setFormSubmitted(true);
+                form.reset();
+            } else {
+                console.error("Form submission failed");
+            }
+        } catch (error) {
+            console.error("Error submitting form", error);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -150,8 +173,6 @@ export default function EventsPage() {
                             {!formSubmitted ? (
                                 <form
                                     onSubmit={handleFormSubmit}
-                                    action="https://formspree.io/f/crabbyalsbands@gmail.com"
-                                    method="POST"
                                     style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.2rem', textAlign: 'left' }}
                                 >
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -160,7 +181,7 @@ export default function EventsPage() {
                                     </div>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                         <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Contact Email</label>
-                                        <input required type="email" name="_replyto" placeholder="your@email.com" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
+                                        <input required type="email" name="email" placeholder="your@email.com" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
                                     </div>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                         <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Requested Rate</label>
@@ -181,11 +202,12 @@ export default function EventsPage() {
                                     <div style={{ gridColumn: 'span 2', marginTop: '0.5rem' }}>
                                         <button
                                             type="submit"
-                                            style={{ width: '100%', padding: '1.1rem', background: 'var(--accent)', color: 'black', border: 'none', borderRadius: '8px', fontWeight: '800', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '2px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.8rem', transition: 'transform 0.2s ease, filter 0.2s ease' }}
-                                            onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.filter = 'brightness(1.1)'; }}
-                                            onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.filter = 'brightness(1)'; }}
+                                            disabled={isSubmitting}
+                                            style={{ width: '100%', padding: '1.1rem', background: 'var(--accent)', color: 'black', border: 'none', borderRadius: '8px', fontWeight: '800', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '2px', cursor: isSubmitting ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.8rem', transition: 'transform 0.2s ease, filter 0.2s ease', opacity: isSubmitting ? 0.7 : 1 }}
+                                            onMouseEnter={(e) => { if (!isSubmitting) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.filter = 'brightness(1.1)'; } }}
+                                            onMouseLeave={(e) => { if (!isSubmitting) { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.filter = 'brightness(1)'; } }}
                                         >
-                                            <Send size={18} /> Submit Inquiry
+                                            <Send size={18} /> {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
                                         </button>
                                     </div>
                                 </form>

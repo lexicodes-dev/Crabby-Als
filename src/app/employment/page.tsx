@@ -89,7 +89,8 @@ export default function EmploymentPage() {
           }}>
             <h3 style={{ fontSize: '1.8rem', color: 'var(--primary)', marginBottom: '1.5rem', fontFamily: 'var(--font-serif)' }}>Apply Now</h3>
             
-            <form action="https://formspree.io/f/Crabbyals@yahoo.com" method="POST" encType="multipart/form-data" style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+            <form action="https://api.web3forms.com/submit" method="POST" encType="multipart/form-data" style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+              <input type="hidden" name="access_key" value={process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || ""} />
               <div>
                 <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: 600, color: 'var(--primary)' }}>Full Name</label>
                 <div style={{ position: 'relative' }}>
@@ -111,7 +112,7 @@ export default function EmploymentPage() {
                   <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: 600, color: 'var(--primary)' }}>Email</label>
                   <div style={{ position: 'relative' }}>
                     <Mail size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#999' }} />
-                    <input type="email" name="_replyto" placeholder="john@example.com" style={{
+                    <input type="email" name="email" placeholder="john@example.com" style={{
                       width: '100%',
                       padding: '0.8rem 1rem 0.8rem 2.8rem',
                       borderRadius: '8px',
