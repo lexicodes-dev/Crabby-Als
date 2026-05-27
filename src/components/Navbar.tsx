@@ -61,7 +61,6 @@ export default function Navbar() {
     { name: 'Live Music', href: '/livemusic' },
     { name: 'Private Events', href: '/private-events' },
     { name: 'Gallery', href: '/gallery' },
-    { name: 'Employment', href: '/employment' },
   ];
 
   const linkStyle = {

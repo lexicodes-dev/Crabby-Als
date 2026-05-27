@@ -27,7 +27,7 @@ export default function EventsPage() {
 
         try {
             const response = await fetch("https://api.web3forms.com/submit", {
-                method: "POST",
+                method: "POST", 
                 body: formData
             });
 
