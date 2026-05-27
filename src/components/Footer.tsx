@@ -19,7 +19,7 @@ export default function Footer() {
             <div className="container">
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '3rem', marginBottom: '3rem' }}>
                     {/* Column 1: Connect With Us */}
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                    <div className="connect-column">
                         <h3 style={headerStyle}>Connect With Us</h3>
                         <div style={{ display: 'flex', gap: '1.25rem', marginTop: '0.5rem' }}>
                             <Link href="https://www.facebook.com/share/1ATP46ueWb/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" style={{ color: 'white', background: 'rgba(255,255,255,0.1)', padding: '0.5rem', borderRadius: '50%', display: 'flex', transition: 'all 0.3s' }} onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent)'; e.currentTarget.style.transform = 'translateY(-3px)' }} onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'translateY(0)' }}>
@@ -66,6 +66,19 @@ export default function Footer() {
                     &copy; {new Date().getFullYear()} Crabby Al&apos;s Seafood Restaurant. All rights reserved.
                 </div>
             </div>
+
+            <style jsx>{`
+                .connect-column {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+                @media (max-width: 768px) {
+                    .connect-column {
+                        align-items: flex-start;
+                    }
+                }
+            `}</style>
         </footer>
     );
 }
