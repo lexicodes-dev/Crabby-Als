@@ -219,7 +219,7 @@ export interface SeasonalDrinkData {
 export async function getSeasonalDrinkImages(): Promise<SeasonalDrinkData[]> {
     const query = `
         query GetSeasonalDrinks {
-            seasonalDrinksMenu(first: 10) {
+            seasonalDrinksMenu(first: 1) {
                 nodes {
                     title
                     drinksMenu {
