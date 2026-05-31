@@ -1,4 +1,4 @@
-const WP_GRAPHQL_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://olivedrab-loris-573312.hostingersite.com/graphql';
+const WP_GRAPHQL_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://mgmt.crabbyals.com/graphql';
 
 export interface DailySpecialData {
     imageUrl: string;
