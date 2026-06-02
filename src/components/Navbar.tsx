@@ -89,10 +89,10 @@ export default function Navbar({ bannerData }: { bannerData: PromoBannerData | n
           transition: 'all 0.4s ease'
         }}
       >
-      <div style={{ maxWidth: '1600px', margin: '0 auto', padding: '0 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontWeight: 'bold', fontSize: '1.4rem', color: 'var(--white)', letterSpacing: '2px', fontFamily: 'var(--font-serif)' }}>
-          <img src="/logo.png" alt="Crabby Al's Logo" style={{ height: '65px', width: 'auto' }} />
-          <span style={{ textTransform: 'uppercase' }}>CRABBY AL&apos;S</span>
+      <div className="nav-container" style={{ maxWidth: '1600px', margin: '0 auto', padding: '0 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', position: 'relative' }}>
+        <Link href="/" className="logo-link" style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontWeight: 'bold', fontSize: '1.4rem', color: 'var(--white)', letterSpacing: '2px', fontFamily: 'var(--font-serif)', minHeight: '65px' }}>
+          <img src="/logo.png" alt="Crabby Al's Logo" className="logo-img" style={{ height: '65px', width: 'auto' }} />
+          <span className="logo-text" style={{ textTransform: 'uppercase' }}>CRABBY AL&apos;S</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -366,11 +366,25 @@ export default function Navbar({ bannerData }: { bannerData: PromoBannerData | n
 
       <style jsx>{`
         @media (max-width: 768px) {
+          .nav-container {
+            justify-content: center !important;
+            padding: 0 1rem !important;
+          }
           .desktop-menu {
             display: none !important;
           }
           .mobile-toggle {
             display: block !important;
+            position: absolute;
+            right: 1rem;
+          }
+          .logo-link {
+            width: 100%;
+            justify-content: center;
+          }
+          .logo-img {
+            position: absolute;
+            left: 1rem;
           }
         }
       `}</style>

@@ -628,7 +628,21 @@ function DrinksPageContent() {
                                 alignItems: 'start'
                             }}>
                                 {/* Row 1: Cocktails & Martinis */}
-                                <div>{renderSections([cocktailsLeftCol[0]])}</div>
+                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                    {renderSections([cocktailsLeftCol[0]])}
+                                    <div style={{ textAlign: 'center', marginTop: '-1rem', marginBottom: '2rem' }}>
+                                        <img 
+                                            src="/pics/cheers.jpeg" 
+                                            alt="Cheers" 
+                                            className="cheers-inline-img mobile-zoomable"
+                                            onClick={(e) => {
+                                                if (window.innerWidth <= 768) {
+                                                    // Optional: if you also want this clickable on mobile
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                </div>
                                 <div>{renderSections([cocktailsRightCol[0]])}</div>
 
                                 {/* Row 2: Bourbon & Tequila + Bottles/Cans */}
@@ -659,12 +673,21 @@ function DrinksPageContent() {
                 }
                 .desktop-tabs { display: flex; }
                 .mobile-tabs { display: none; }
+                .cheers-inline-img {
+                    max-width: 320px;
+                    width: 100%;
+                    border-radius: 12px;
+                    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                }
                 @media (max-width: 1200px) {
                     .drinks-columns {
                         grid-template-columns: repeat(2, 1fr) !important;
                     }
                 }
                 @media (max-width: 768px) {
+                    .cheers-inline-img {
+                        max-width: 220px;
+                    }
                     .desktop-tabs { display: none !important; }
                     .mobile-tabs {
                         display: block;

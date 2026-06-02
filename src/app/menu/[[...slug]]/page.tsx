@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Leaf, Calendar, Clock, Star, Utensils } from 'lucide-react';
+import { Leaf, Calendar, Clock, Star, Utensils, X } from 'lucide-react';
 import { getDailySpecials, DailySpecialData, getSeasonalSpecials, SeasonalSpecialData, getBrunchMenu } from '@/lib/wordpress';
 import CarouselGallery from '@/components/CarouselGallery';
 
@@ -248,6 +248,7 @@ function MenuPageContent() {
     const [loadingSeasonal, setLoadingSeasonal] = useState(false);
     const [brunchImageUrl, setBrunchImageUrl] = useState<string | null>(null);
     const [loadingBrunch, setLoadingBrunch] = useState(false);
+    const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
 
     const handleTabClick = (tabName: string) => {
         setActiveTab(tabName);
@@ -424,12 +425,18 @@ function MenuPageContent() {
                                     <img
                                         src={specials?.imageUrl || "/daily-specials.png"}
                                         alt="Daily Specials"
+                                        className="mobile-zoomable"
                                         style={{
                                             maxWidth: '800px',
                                             width: '100%',
                                             maxHeight: '70vh',
                                             height: 'auto',
                                             objectFit: 'contain'
+                                        }}
+                                        onClick={(e) => {
+                                            if (window.innerWidth <= 768) {
+                                                setEnlargedImage((e.target as HTMLImageElement).src);
+                                            }
                                         }}
                                         onError={(e) => {
                                             const img = e.target as HTMLImageElement;
@@ -497,11 +504,17 @@ function MenuPageContent() {
                                             <img
                                                 src={special.imageUrl}
                                                 alt={special.label || "Seasonal Special"}
+                                                className="mobile-zoomable"
                                                 style={{
                                                     width: '100%',
                                                     height: 'auto',
                                                     maxHeight: '70vh',
                                                     objectFit: 'contain'
+                                                }}
+                                                onClick={(e) => {
+                                                    if (window.innerWidth <= 768) {
+                                                        setEnlargedImage((e.target as HTMLImageElement).src);
+                                                    }
                                                 }}
                                                 onError={(e) => {
                                                     const img = e.target as HTMLImageElement;
@@ -542,11 +555,17 @@ function MenuPageContent() {
                                 <img
                                     src={brunchImageUrl}
                                     alt="Brunch Menu"
+                                    className="mobile-zoomable"
                                     style={{
                                         maxWidth: '800px',
                                         width: '100%',
                                         height: 'auto',
                                         objectFit: 'contain'
+                                    }}
+                                    onClick={(e) => {
+                                        if (window.innerWidth <= 768) {
+                                            setEnlargedImage((e.target as HTMLImageElement).src);
+                                        }
                                     }}
                                 />
                             ) : (
@@ -623,7 +642,9 @@ function MenuPageContent() {
                                 </div>
 
                                 {section.footer && (
-                                    <div style={{
+                                    <div 
+                                        className={section.highlightFooter ? "kids-banner" : ""}
+                                        style={{
                                         position: 'relative',
                                         marginTop: '2rem',
                                         textAlign: 'center',
@@ -700,6 +721,52 @@ function MenuPageContent() {
                         * Consuming raw or undercooked meats, poultry, seafood, shellfish or eggs may increase your risk of foodborne illness.
                     </div>
                 </div>
+
+                {enlargedImage && (
+                    <div 
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100vw',
+                            height: '100vh',
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                            zIndex: 9999,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: '1rem'
+                        }}
+                        onClick={() => setEnlargedImage(null)}
+                    >
+                        <button 
+                            style={{
+                                position: 'absolute',
+                                top: '1rem',
+                                right: '1rem',
+                                background: 'none',
+                                border: 'none',
+                                color: 'white',
+                                cursor: 'pointer',
+                                padding: '0.5rem',
+                                zIndex: 10000
+                            }}
+                            onClick={() => setEnlargedImage(null)}
+                        >
+                            <X size={32} />
+                        </button>
+                        <img 
+                            src={enlargedImage} 
+                            alt="Enlarged menu" 
+                            style={{
+                                maxWidth: '100%',
+                                maxHeight: '90vh',
+                                objectFit: 'contain'
+                            }} 
+                            onClick={(e) => e.stopPropagation()}
+                        />
+                    </div>
+                )}
             </div>
             <style jsx>{`
                 .fade-in {
@@ -717,6 +784,12 @@ function MenuPageContent() {
                     display: none;
                 }
                 @media (max-width: 768px) {
+                    .mobile-zoomable {
+                        cursor: pointer;
+                    }
+                    .kids-banner {
+                        background: url("/pics/kids-banner-bg.png") center / 250% auto no-repeat !important;
+                    }
                     .desktop-tabs {
                         display: none !important;
                     }
