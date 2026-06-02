@@ -3,6 +3,8 @@ import { Montserrat, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { getPromoBanner, getPromoPopup } from "@/lib/wordpress";
+import PromoPopup from "@/components/PromoPopup";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -27,19 +29,23 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const bannerData = await getPromoBanner();
+  const popupData = await getPromoPopup();
+
   return (
     <html lang="en">
       <body className={`${montserrat.variable} ${playfair.variable}`}>
-        <Navbar />
+        <Navbar bannerData={bannerData} />
         <main style={{ minHeight: '100vh', paddingTop: 'var(--header-height)' }}>
           {children}
         </main>
         <Footer />
+        <PromoPopup data={popupData} />
       </body>
     </html>
   );

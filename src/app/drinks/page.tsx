@@ -135,7 +135,6 @@ const beerData: DrinkSection[] = [
         category: "Non-Alcoholic",
         items: [
             { name: "Bud Zero NA", price: "", description: "" },
-            { name: "Corona NA", price: "", description: "" },
             { name: "Guinness NA", price: "", description: "" },
             { name: "Heineken Zero", price: "", description: "" }
         ]

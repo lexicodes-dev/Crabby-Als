@@ -5,12 +5,14 @@ import { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
+import PromoBanner from './PromoBanner';
+
 const menuDropdownItems = [
-  { name: 'Main Menu', href: '/menu?tab=Main+Menu' },
-  { name: 'Daily Specials', href: '/menu?tab=Daily+Specials' },
-  { name: 'Seasonal Specials', href: '/menu?tab=Seasonal+Specials' },
-  { name: 'Brunch Menu', href: '/menu?tab=Brunch+Menu' },
-  { name: 'Kids Menu', href: '/menu?tab=Kids+Menu' },
+  { name: 'Main Menu', href: '/menu/main' },
+  { name: 'Daily Specials', href: '/menu/daily' },
+  { name: 'Seasonal Specials', href: '/menu/seasonal' },
+  { name: 'Brunch Menu', href: '/menu/brunch' },
+  { name: 'Kids Menu', href: '/menu/kids' },
 ];
 
 const drinksDropdownItems = [
@@ -20,7 +22,9 @@ const drinksDropdownItems = [
   { name: 'Seasonal', href: '/drinks?tab=Seasonal+Drinks' },
 ];
 
-export default function Navbar() {
+import { PromoBannerData } from '@/lib/wordpress';
+
+export default function Navbar({ bannerData }: { bannerData: PromoBannerData | null }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [menuDropdownOpen, setMenuDropdownOpen] = useState(false);
@@ -74,14 +78,17 @@ export default function Navbar() {
   };
 
   return (
-    <nav
-      className="glass-nav"
-      style={{
-        background: scrolled ? 'rgba(0, 0, 0, 0.45)' : 'rgba(0, 0, 0, 0.98)',
-        backdropFilter: scrolled ? 'blur(20px)' : 'blur(5px)',
-        transition: 'all 0.4s ease'
-      }}
-    >
+    <header style={{ position: 'fixed', top: 0, width: '100%', zIndex: 1000, display: 'flex', flexDirection: 'column' }}>
+      <PromoBanner data={bannerData} />
+      <nav
+        className="glass-nav"
+        style={{
+          position: 'relative',
+          background: scrolled ? 'rgba(0, 0, 0, 0.45)' : 'rgba(0, 0, 0, 0.98)',
+          backdropFilter: scrolled ? 'blur(20px)' : 'blur(5px)',
+          transition: 'all 0.4s ease'
+        }}
+      >
       <div style={{ maxWidth: '1600px', margin: '0 auto', padding: '0 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontWeight: 'bold', fontSize: '1.4rem', color: 'var(--white)', letterSpacing: '2px', fontFamily: 'var(--font-serif)' }}>
           <img src="/logo.png" alt="Crabby Al's Logo" style={{ height: '65px', width: 'auto' }} />
@@ -368,5 +375,6 @@ export default function Navbar() {
         }
       `}</style>
     </nav>
+    </header>
   );
 }

@@ -367,3 +367,160 @@ export async function getBandScheduleImage(): Promise<string | null> {
         return null;
     }
 }
+
+export interface PromoBannerData {
+    text: string;
+    isActive: boolean;
+}
+
+export async function getPromoBanner(): Promise<PromoBannerData | null> {
+    const query = `
+        query GetPromoBanner {
+            promoBanners(first: 1) {
+                nodes {
+                    editBanner {
+                        bannerText
+                        bannerSwitch
+                    }
+                }
+            }
+        }
+    `;
+
+    try {
+        const response = await fetch(WP_GRAPHQL_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query }),
+            // Fetch fresh banner data every 60 seconds
+            next: { revalidate: 60 }
+        });
+
+        const result = await response.json();
+
+        if (result.errors) {
+            console.error('❌ GraphQL Errors for Promo Banner:', JSON.stringify(result.errors, null, 2));
+            return null;
+        }
+
+        const node = result?.data?.promoBanners?.nodes?.[0];
+        if (!node) return null;
+
+        const settings = node.editBanner;
+        if (!settings) return null;
+
+        return {
+            text: settings.bannerText || 'NEW! Banners are here - your new go-to pattern for important announcements',
+            isActive: settings.bannerSwitch === true || settings.bannerSwitch === 'true' || settings.bannerSwitch === '1'
+        };
+    } catch (error) {
+        console.error('Error fetching promo banner from WordPress:', error);
+        return null;
+    }
+}
+
+export interface PromoPopupData {
+    imageUrl: string;
+    text: string;
+    buttonText: string;
+    buttonLink: string;
+    hasButton: boolean;
+    isActive: boolean;
+}
+
+export async function getPromoPopup(): Promise<PromoPopupData | null> {
+    const query = `
+        query GetPromoPopup {
+            popups(first: 1) {
+                nodes {
+                    editPopup {
+                        popupImage {
+                            node {
+                                sourceUrl
+                            }
+                        }
+                        popupText
+                        buttonText
+                        buttonLink
+                        buttonSwitch
+                        popupSwitch
+                    }
+                }
+            }
+        }
+    `;
+
+    try {
+        const response = await fetch(WP_GRAPHQL_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query }),
+            // Fetch fresh popup data every 60 seconds
+            next: { revalidate: 60 }
+        });
+
+        const result = await response.json();
+
+        if (result.errors) {
+            console.error('❌ GraphQL Errors for Promo Popup:', JSON.stringify(result.errors, null, 2));
+            return null;
+        }
+
+        const node = result?.data?.popups?.nodes?.[0];
+        if (!node) return null;
+
+        const settings = node.editPopup;
+        if (!settings) return null;
+
+        return {
+            imageUrl: settings.popupImage?.node?.sourceUrl || '',
+            text: settings.popupText || '',
+            buttonText: settings.buttonText || '',
+            buttonLink: settings.buttonLink || '',
+            hasButton: settings.buttonSwitch === true || settings.buttonSwitch === 'true' || settings.buttonSwitch === '1',
+            isActive: settings.popupSwitch === true || settings.popupSwitch === 'true' || settings.popupSwitch === '1'
+        };
+    } catch (error) {
+        console.error('Error fetching promo popup:', error);
+        return null;
+    }
+}
+
+export async function getBrunchMenu(): Promise<string | null> {
+    const query = `
+        query GetBrunchMenu {
+            allBrunchMenus(first: 1) {
+                nodes {
+                    updateBrunchMenu {
+                        brunchMenu {
+                            node {
+                                sourceUrl
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    `;
+
+    try {
+        const response = await fetch(WP_GRAPHQL_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query }),
+            next: { revalidate: 60 }
+        });
+
+        if (!response.ok) {
+            return null;
+        }
+
+        const result = await response.json();
+        const node = result?.data?.allBrunchMenus?.nodes?.[0];
+        
+        return node?.updateBrunchMenu?.brunchMenu?.node?.sourceUrl || null;
+    } catch (error) {
+        console.error('Error fetching brunch menu:', error);
+        return null;
+    }
+}

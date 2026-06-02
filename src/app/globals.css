@@ -10,11 +10,13 @@
   /* Coral / Crab Red */
   --highlight: #F77F00;
   /* Warm Sunset Orange */
-  --background: #F9F9F9;
-  /* Off-White / Sand */
+  --background: #F2EBE1;
+  /* Faded Sandy Beige */
+  --bg-texture: linear-gradient(rgba(244, 239, 230, 0.45), rgba(244, 239, 230, 0.45)), url("/pics/sand-bg-new.png");
   --foreground: #333333;
   /* Charcoal Gray */
-  --white: #ffffff;
+  --white: #FDFBF7;
+  /* Warm soft white */
   --glass: rgba(10, 61, 98, 0.7);
   /* More transparent for glass feel */
 
@@ -48,7 +50,12 @@ body {
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background-color: var(--background);
+  background-image: var(--bg-texture);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   font-family: var(--font-main);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -158,4 +165,37 @@ button {
 
 .hidden {
   display: none;
+}
+
+/* Promo Popup */
+.promo-popup-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+}
+
+.promo-popup-content {
+  width: 320px;
+  background-color: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  font-family: var(--font-main);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .promo-popup-container {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    display: flex;
+    justify-content: center;
+  }
+  .promo-popup-content {
+    width: 100%;
+    max-width: 400px;
+  }
 }
