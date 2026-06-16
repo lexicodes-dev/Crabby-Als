@@ -458,7 +458,10 @@ function MenuPageContent() {
                                             letterSpacing: '2px',
                                             margin: 0
                                         }}>
-                                            {specials?.dateText ? `Specials for ${specials.dateText}` : `Specials for ${defaultDate}`}
+                                            {specials?.specialType 
+                                                ? `${specials.specialType} Special for ${specials.dateText || defaultDate}`
+                                                : (specials?.dateText ? `Specials for ${specials.dateText}` : `Specials for ${defaultDate}`)
+                                            }
                                         </h2>
                                     </div>
                                 </>

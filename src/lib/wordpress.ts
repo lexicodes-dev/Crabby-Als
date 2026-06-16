@@ -3,6 +3,7 @@ const WP_GRAPHQL_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://mgm
 export interface DailySpecialData {
     imageUrl: string;
     dateText: string;
+    specialType?: string;
 }
 
 export interface SeasonalSpecialData {
@@ -24,6 +25,7 @@ export async function getDailySpecials(): Promise<DailySpecialData | null> {
                             }
                         }
                         dayOfSpecials
+                        specialType
                     }
                 }
             }
@@ -84,9 +86,12 @@ export async function getDailySpecials(): Promise<DailySpecialData | null> {
             }
         }
 
+        const specialType = fields.specialType || null;
+
         return {
             imageUrl,
             dateText,
+            specialType,
         };
     } catch (error) {
         console.error('Error fetching specials from WordPress:', error);
