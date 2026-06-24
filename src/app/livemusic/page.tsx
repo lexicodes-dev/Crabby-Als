@@ -23,19 +23,27 @@ export default function EventsPage() {
         
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
-        formData.append("access_key", process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "");
+        const data = Object.fromEntries(formData.entries());
+        data.access_key = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "";
+        data.subject = "New Band Booking Inquiry: " + (data['band-name'] || 'Unknown Band');
 
         try {
             const response = await fetch("https://api.web3forms.com/submit", {
                 method: "POST", 
-                body: formData
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify(data)
             });
 
-            if (response.ok) {
+            const result = await response.json();
+            
+            if (response.ok && result.success) {
                 setFormSubmitted(true);
                 form.reset();
             } else {
-                console.error("Form submission failed");
+                console.error("Form submission failed", result);
             }
         } catch (error) {
             console.error("Error submitting form", error);
