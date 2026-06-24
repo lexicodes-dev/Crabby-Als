@@ -24,7 +24,7 @@ export default function EventsPage() {
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
-        data.access_key = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "";
+        data.access_key = "1604c578-6d39-4a0c-92e5-6e075e64e00d";
         data.subject = "New Band Booking Inquiry: " + (data['band-name'] || 'Unknown Band');
 
         try {

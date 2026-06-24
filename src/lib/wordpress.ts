@@ -397,8 +397,8 @@ export async function getPromoBanner(): Promise<PromoBannerData | null> {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ query }),
-            // Fetch fresh banner data every 60 seconds
-            next: { revalidate: 60 }
+            // Fetch fresh banner data on every request to avoid caching issues
+            next: { revalidate: 0 }
         });
 
         const result = await response.json();
@@ -460,8 +460,8 @@ export async function getPromoPopup(): Promise<PromoPopupData | null> {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ query }),
-            // Fetch fresh popup data every 60 seconds
-            next: { revalidate: 60 }
+            // Fetch fresh popup data on every request to avoid caching issues
+            next: { revalidate: 0 }
         });
 
         const result = await response.json();
