@@ -193,7 +193,7 @@ export default function EventsPage() {
                                     </div>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                         <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Requested Rate</label>
-                                        <input type="text" name="rate" placeholder="e.g. $500 / 3 hours" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
+                                        <input type="text" name="rate" placeholder="100/hr" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
                                     </div>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                         <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Genres</label>
