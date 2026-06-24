@@ -185,7 +185,7 @@ export default function EventsPage() {
                                 >
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                         <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Band Name</label>
-                                        <input required type="text" name="band-name" placeholder="Enter your band name" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
+                                        <input type="text" name="band-name" placeholder="Enter your band name" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
                                     </div>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                         <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Contact Email</label>
@@ -193,19 +193,19 @@ export default function EventsPage() {
                                     </div>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                         <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Requested Rate</label>
-                                        <input required type="text" name="rate" placeholder="e.g. $500 / 3 hours" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
+                                        <input type="text" name="rate" placeholder="e.g. $500 / 3 hours" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
                                     </div>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                         <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Genres</label>
-                                        <input required type="text" name="genres" placeholder="e.g. Rock, Blues, Jazz" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
+                                        <input type="text" name="genres" placeholder="e.g. Rock, Blues, Jazz" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
                                     </div>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', gridColumn: 'span 2' }}>
                                         <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Samples of Music (Links)</label>
-                                        <input required type="text" name="samples" placeholder="Link to Spotify, YouTube, SoundCloud, etc." style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
+                                        <input type="text" name="samples" placeholder="Link to Spotify, YouTube, SoundCloud, etc." style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', fontSize: '0.9rem' }} />
                                     </div>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', gridColumn: 'span 2' }}>
                                         <label style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>Availability</label>
-                                        <textarea required name="availability" rows={2} placeholder="Indicate when you are interested in playing..." style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', resize: 'none', fontSize: '0.9rem' }} />
+                                        <textarea name="availability" rows={2} placeholder="Indicate when you are interested in playing..." style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.85rem', borderRadius: '8px', color: 'white', outline: 'none', resize: 'none', fontSize: '0.9rem' }} />
                                     </div>
                                     <div style={{ gridColumn: 'span 2', marginTop: '0.5rem' }}>
                                         <button
