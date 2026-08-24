@@ -244,11 +244,13 @@ function MenuPageContent() {
     const [activeTab, setActiveTab] = useState(initialTab);
     const [specials, setSpecials] = useState<DailySpecialData | null>(null);
     const [loadingSpecials, setLoadingSpecials] = useState(false);
+    const [specialsFetched, setSpecialsFetched] = useState(false);
     const [seasonalSpecials, setSeasonalSpecials] = useState<SeasonalSpecialData[]>([]);
     const [loadingSeasonal, setLoadingSeasonal] = useState(false);
     const [brunchImageUrl, setBrunchImageUrl] = useState<string | null>(null);
     const [loadingBrunch, setLoadingBrunch] = useState(false);
     const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
+    const [isExpired, setIsExpired] = useState(false);
 
     const handleTabClick = (tabName: string) => {
         setActiveTab(tabName);
@@ -270,10 +272,97 @@ function MenuPageContent() {
     }, [params.slug]);
 
     useEffect(() => {
-        if (activeTab === "Daily Specials" && !specials) {
+        const checkExpired = () => {
+            if (specialsFetched && !specials) {
+                setIsExpired(true);
+                return;
+            }
+            
+            if (!specialsFetched) {
+                setIsExpired(false);
+                return;
+            }
+
+            const formatter = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'America/New_York',
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric',
+                hour: 'numeric',
+                hourCycle: 'h23'
+            });
+            const parts = formatter.formatToParts(new Date());
+            const est: Record<string, string> = {};
+            parts.forEach(({ type, value }) => {
+                est[type] = value;
+            });
+            
+            const currentYear = parseInt(est.year, 10);
+            const currentMonth = parseInt(est.month, 10) - 1; 
+            const currentDay = parseInt(est.day, 10);
+            const currentHour = parseInt(est.hour, 10);
+            
+            const currentESTDateOnly = new Date(currentYear, currentMonth, currentDay).getTime();
+            
+            let specialYear = currentYear;
+            let specialMonth = currentMonth;
+            let specialDay = currentDay;
+            
+            if (specials?.rawDate) {
+                let rd = specials.rawDate;
+                if (rd.includes('T')) rd = rd.split('T')[0];
+                
+                if (rd.includes('-')) {
+                    const [y, m, d] = rd.split('-');
+                    if (y && m && d) {
+                        specialYear = parseInt(y, 10);
+                        specialMonth = parseInt(m, 10) - 1;
+                        specialDay = parseInt(d, 10);
+                    }
+                } else if (rd.includes('/')) {
+                    const [m, d, y] = rd.split('/');
+                    if (y && m && d) {
+                        specialYear = parseInt(y, 10);
+                        specialMonth = parseInt(m, 10) - 1;
+                        specialDay = parseInt(d, 10);
+                    }
+                }
+            }
+            
+            const specialESTDateOnly = new Date(specialYear, specialMonth, specialDay).getTime();
+            
+            if (currentESTDateOnly > specialESTDateOnly) {
+                setIsExpired(true);
+                return;
+            }
+            
+            if (currentESTDateOnly === specialESTDateOnly) {
+                const type = (specials?.specialType || "").toLowerCase();
+                
+                if (type.includes("lunch") && currentHour >= 16) {
+                    setIsExpired(true);
+                    return;
+                }
+                if (type.includes("dinner") && currentHour >= 23) {
+                    setIsExpired(true);
+                    return;
+                }
+            }
+            
+            setIsExpired(false);
+        };
+        
+        checkExpired();
+        const interval = setInterval(checkExpired, 60000);
+        return () => clearInterval(interval);
+    }, [specials, specialsFetched]);
+
+    useEffect(() => {
+        if (activeTab === "Daily Specials" && !specialsFetched) {
             setLoadingSpecials(true);
             getDailySpecials().then(data => {
                 setSpecials(data);
+                setSpecialsFetched(true);
                 setLoadingSpecials(false);
             });
         }
@@ -291,7 +380,7 @@ function MenuPageContent() {
                 setLoadingBrunch(false);
             });
         }
-    }, [activeTab, specials, seasonalSpecials.length, brunchImageUrl, loadingBrunch]);
+    }, [activeTab, specialsFetched, seasonalSpecials.length, brunchImageUrl, loadingBrunch]);
 
     const tabs = [
         { name: "Main Menu", icon: <Utensils size={18} /> },
@@ -419,6 +508,32 @@ function MenuPageContent() {
                             {loadingSpecials ? (
                                 <div style={{ minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <div className="animate-pulse" style={{ color: 'var(--primary)', fontWeight: 'bold', letterSpacing: '2px' }}>LOADING SPECIALS...</div>
+                                </div>
+                            ) : isExpired ? (
+                                <div style={{ 
+                                    minHeight: '400px', 
+                                    display: 'flex', 
+                                    flexDirection: 'column',
+                                    alignItems: 'center', 
+                                    justifyContent: 'center',
+                                    padding: '2rem'
+                                }}>
+                                    <h2 style={{
+                                        fontFamily: 'var(--font-serif)',
+                                        fontSize: '2rem',
+                                        color: 'var(--accent)',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '2px',
+                                        margin: '0 0 1rem 0'
+                                    }}>
+                                        Check back later
+                                    </h2>
+                                    <p style={{
+                                        fontSize: '1.2rem',
+                                        color: 'var(--foreground)'
+                                    }}>
+                                        Currently, there are no specials posted at this time.
+                                    </p>
                                 </div>
                             ) : (
                                 <>

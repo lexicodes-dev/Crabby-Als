@@ -3,6 +3,7 @@ const WP_GRAPHQL_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://mgm
 export interface DailySpecialData {
     imageUrl: string;
     dateText: string;
+    rawDate: string;
     specialType?: string;
 }
 
@@ -91,6 +92,7 @@ export async function getDailySpecials(): Promise<DailySpecialData | null> {
         return {
             imageUrl,
             dateText,
+            rawDate,
             specialType,
         };
     } catch (error) {
