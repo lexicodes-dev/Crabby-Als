@@ -11,7 +11,6 @@ const menuDropdownItems = [
   { name: 'Main Menu', href: '/menu/main' },
   { name: 'Daily Specials', href: '/menu/daily' },
   { name: 'Seasonal Specials', href: '/menu/seasonal' },
-  { name: 'Brunch Menu', href: '/menu/brunch' },
   { name: 'Kids Menu', href: '/menu/kids' },
 ];
 

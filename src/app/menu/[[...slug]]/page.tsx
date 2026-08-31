@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Leaf, Calendar, Clock, Star, Utensils, X } from 'lucide-react';
-import { getDailySpecials, DailySpecialData, getSeasonalSpecials, SeasonalSpecialData, getBrunchMenu } from '@/lib/wordpress';
+import { getDailySpecials, DailySpecialData, getSeasonalSpecials, SeasonalSpecialData } from '@/lib/wordpress';
 import CarouselGallery from '@/components/CarouselGallery';
 
 const MENU_GALLERY_IMAGES = [
@@ -223,7 +223,6 @@ function MenuPageContent() {
     const slugMap: Record<string, string> = {
         'main': 'Main Menu',
         'kids': 'Kids Menu',
-        'brunch': 'Brunch Menu',
         'seasonal': 'Seasonal Specials',
         'daily': 'Daily Specials'
     };
@@ -231,14 +230,13 @@ function MenuPageContent() {
     const reverseSlugMap: Record<string, string> = {
         'Main Menu': 'main',
         'Kids Menu': 'kids',
-        'Brunch Menu': 'brunch',
         'Seasonal Specials': 'seasonal',
         'Daily Specials': 'daily'
     };
 
     const slugArray = params.slug as string[] | undefined;
     const slug = slugArray ? slugArray[0] : 'main';
-    const validTabs = ["Main Menu", "Kids Menu", "Brunch Menu", "Seasonal Specials", "Daily Specials"];
+    const validTabs = ["Main Menu", "Kids Menu", "Seasonal Specials", "Daily Specials"];
     const initialTab = slugMap[slug] || "Main Menu";
 
     const [activeTab, setActiveTab] = useState(initialTab);
@@ -247,8 +245,6 @@ function MenuPageContent() {
     const [specialsFetched, setSpecialsFetched] = useState(false);
     const [seasonalSpecials, setSeasonalSpecials] = useState<SeasonalSpecialData[]>([]);
     const [loadingSeasonal, setLoadingSeasonal] = useState(false);
-    const [brunchImageUrl, setBrunchImageUrl] = useState<string | null>(null);
-    const [loadingBrunch, setLoadingBrunch] = useState(false);
     const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
     const [isExpired, setIsExpired] = useState(false);
 
@@ -373,20 +369,12 @@ function MenuPageContent() {
                 setLoadingSeasonal(false);
             });
         }
-        if (activeTab === "Brunch Menu" && !brunchImageUrl && !loadingBrunch) {
-            setLoadingBrunch(true);
-            getBrunchMenu().then(url => {
-                setBrunchImageUrl(url);
-                setLoadingBrunch(false);
-            });
-        }
-    }, [activeTab, specialsFetched, seasonalSpecials.length, brunchImageUrl, loadingBrunch]);
+    }, [activeTab, specialsFetched, seasonalSpecials.length]);
 
     const tabs = [
         { name: "Main Menu", icon: <Utensils size={18} /> },
         { name: "Daily Specials", icon: <Calendar size={18} /> },
         { name: "Seasonal Specials", icon: <Leaf size={18} /> },
-        { name: "Brunch Menu", icon: <Clock size={18} /> },
         { name: "Kids Menu", icon: <Star size={18} /> }
     ];
 
@@ -659,50 +647,6 @@ function MenuPageContent() {
                                     </p>
                                     <p style={{ fontSize: '0.9rem', margin: 0 }}>
                                         Check back for our latest seasonal offerings.
-                                    </p>
-                                </div>
-                            )}
-                        </div>
-                    ) : activeTab === "Brunch Menu" ? (
-                        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-                            {loadingBrunch ? (
-                                <div style={{ minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                    <div className="animate-pulse" style={{ color: 'var(--primary)', fontWeight: 'bold', letterSpacing: '2px' }}>LOADING BRUNCH MENU...</div>
-                                </div>
-                            ) : brunchImageUrl ? (
-                                <img
-                                    src={brunchImageUrl}
-                                    alt="Brunch Menu"
-                                    className="mobile-zoomable"
-                                    style={{
-                                        maxWidth: '800px',
-                                        width: '100%',
-                                        height: 'auto',
-                                        objectFit: 'contain'
-                                    }}
-                                    onClick={(e) => {
-                                        if (window.innerWidth <= 768) {
-                                            setEnlargedImage((e.target as HTMLImageElement).src);
-                                        }
-                                    }}
-                                />
-                            ) : (
-                                <div style={{
-                                    minHeight: '400px',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '1rem',
-                                    color: 'var(--primary)',
-                                    opacity: 0.5
-                                }}>
-                                    <Clock size={48} />
-                                    <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', fontStyle: 'italic', margin: 0 }}>
-                                        Brunch specials coming soon!
-                                    </p>
-                                    <p style={{ fontSize: '0.9rem', margin: 0 }}>
-                                        Please check back.
                                     </p>
                                 </div>
                             )}

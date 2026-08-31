@@ -36,10 +36,10 @@ export default function Home() {
     },
     {
       day: "Sunday",
-      title: "Sunday Brunch & Sports",
-      description: "Starting Feb 22nd! Join us for a new Sunday brunch menu followed by all the big games.",
+      title: "Sunday Sports",
+      description: "Join us for all the big games on Sunday.",
       icon: <Utensils size={32} color="var(--accent)" />,
-      time: "Brunch @ 11 AM | Sports All Day"
+      time: "Sports All Day"
     }
   ];
 
